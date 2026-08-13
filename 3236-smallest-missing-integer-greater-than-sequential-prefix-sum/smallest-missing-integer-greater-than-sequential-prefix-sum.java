@@ -1,9 +1,9 @@
 class Solution {
     public int missingInteger(int[] nums) {
 
-        // Find sum of longest sequential prefix
         int sum = nums[0];
 
+        // Find sum of longest sequential prefix
         for (int i = 1; i < nums.length; i++) {
 
             if (nums[i] == nums[i - 1] + 1) {
@@ -13,13 +13,15 @@ class Solution {
             }
         }
 
-        // Find smallest missing integer >= sum
+        // Find smallest missing number >= sum
         int x = sum;
 
         while (true) {
+
             boolean found = false;
 
             for (int num : nums) {
+
                 if (num == x) {
                     found = true;
                     break;
