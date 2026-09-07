@@ -1,26 +1,28 @@
 class Solution {
     public int distinctSubseqII(String s) {
-        final long MOD = 1_000_000_007;
-
-        long dp = 1; // empty subsequence
-        long[] last = new long[26];
-
+        int MOD = 1_000_000_007;
+        
+        // Tracks the number of unique subsequences ending in each letter ('a' through 'z')
+        int[] endWith = new int[26];
+        
+        // Total count of distinct subsequences found so far
+        int currentTotal = 0;
+        
         for (char c : s.toCharArray()) {
             int index = c - 'a';
-
-            long oldDp = dp;
-
-            // Add current character to every existing subsequence
-            dp = (2 * dp) % MOD;
-
-            // Remove duplicates caused by previous occurrence
-            dp = (dp - last[index] + MOD) % MOD;
-
-            // Store the old count for this character
-            last[index] = oldDp;
+            
+            // The new subsequences we can form ending with character `c` is:
+            // (all existing unique subsequences) + (the single character `c` itself)
+            // minus whatever subsequences we previously counted ending in `c`.
+            int newAdded = (currentTotal + 1 - endWith[index] + MOD) % MOD;
+            
+            // Update the total unique subsequences
+            currentTotal = (currentTotal + newAdded) % MOD;
+            
+            // Update the record for subsequences ending in character `c`
+            endWith[index] = (endWith[index] + newAdded) % MOD;
         }
-
-        // Remove empty subsequence
-        return (int) ((dp - 1 + MOD) % MOD);
+        
+        return currentTotal;
     }
 }
